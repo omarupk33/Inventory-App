@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+        The Guild's Inventory✨
+    </h1>
+
+    <ul class="items-container">
+    <%users.map((user)=>{%>    
+        <li item-container>
+            <div>
+                <img src=<%=user.itempic%> alt=<%=user.itemname%>
+                <h3>
+                    Name: <%= user.itemname%>
+                    Amount: <%=user.itemnum%> 
+                </h3>
+            </div>
+        </li>
+        <%})%>
+    </ul>
+</body>
+</html>
