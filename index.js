@@ -8,22 +8,50 @@ app.set('views', './views')
 app.use(express.urlencoded({ extended: true }))
 
 
-app.get('/', async (req, res)=>{
+const newRouter = require('./routes/newRouter')
+
+app.get('/', async (req, res, next)=>{
+    try{
+    
     const users = await getAllItems()
+    
+    if(!users || users.length === 0){
+        throw new Error('Database Connection Failed')
+    }
+        
     res.render('index.ejs', {users:users})
+
+   }
+
+   catch(err){
+    next(err)
+   }
 })
 
-app.get('/new', (req, res)=>{
-    res.render('new.ejs')
+
+
+app.use('/new', newRouter)
+
+
+app.use((req, res, next)=>{
+    res.status(404).json({success: false, Message: 'Page Not Found'})
+})
+
+app.use(( err, req, res, next)=>{
+   if(res.headersSent){
+    return next(err)
+   }
+
+   console.error('Logged Error:', err.stack)
+
+   const statusCode = err.statusCode || 500
+
+   res.status(statusCode).json( {
+    success:false, message: err.message || 'Internal Server Error',
+   })
 
 })
 
-
-app.post('/new', async(req, res)=>{
-    const {name, amount, pic} = req.body
-    await InsertItem(name, amount, pic)
-    res.redirect('/')
-})
 
 
 app.listen(3000, (error)=>{
@@ -32,3 +60,5 @@ app.listen(3000, (error)=>{
  }
  console.log(`connected to port ${3000}`)
 })
+
+
