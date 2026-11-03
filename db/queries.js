@@ -2,12 +2,13 @@ const {pool} = require('./pool')
 
 
 const getAllItems = async ()=>{
-    const allItems = await pool.query('SELECT * FROM items;')
+    const allItems = await pool
+    .query('SELECT * FROM items;')
     console.log(allItems)
     return allItems.rows
 }
 
-const InsertItem = async(item, num, pic)=>{
+const insertItem = async(item, num, pic)=>{
     await pool.query(`INSERT INTO items
     (ItemName, ItemNum, ItemPic) 
     VALUES (($1), ($2), ($3));`, [item, num, pic])
@@ -16,18 +17,33 @@ const InsertItem = async(item, num, pic)=>{
 
 
 const getAllCategories = async ()=>{
-    const allCategories = await pool.query('SELECT * FROM categories;')
+    const allCategories = await pool
+    .query('SELECT * FROM categories;')
     console.log(allCategories)
     return allCategories.rows
 }
 
 
-const InsertCategory = async(category, numOfItems)=>{
+const insertCategory = async(category, numOfItems)=>{
     await pool.query(`INSERT INTO categories
     (CategoryName, RelatedItemsNum) 
     VALUES (($1), ($2));`, [category, numOfItems])
 }
 
+const updateCategoryNum = async(category, items)=>{
+    await pool.query(`UPDATE categories
+SET relateditemsnum = ($1)
+WHERE categoryname = ($2);`, [items.length,category])
+}
+
+// Working on it
+const itemBelongTo = async(category, item)=>{
+    await pool.query(`UPDATE categories
+SET relateditemsnum = ($1)
+WHERE categoryname = ($2);`, [item,category])
+}
 
 
-module.exports = {InsertItem, getAllItems}
+
+module.exports = {insertItem, getAllItems, insertCategory,
+    updateCategoryNum, getAllCategories}

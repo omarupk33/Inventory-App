@@ -7,7 +7,7 @@
     <h1>
        Last Mission Items✨
     </h1>
-    <form action="/new/item" method="POST">
+    <form action="/new/newItem" method="POST">
         <label for="name"> Item's name: </label>
         <input type="text" name="name" id="name">
 
@@ -16,7 +16,17 @@
 
         <label for="pic"> Picture(Url): </label>
         <input type="url" name="pic" id="pic">
-     
+        
+        <label for="belongingTo">Choose a category:</label>
+
+// I broke something here
+
+        <select id="belongingTo" name="belongingTo">
+        <%categories.map((category)=>{%>
+        <option value=<%= category.categoryName %>> <%= category.categoryName %></option>
+        <%})%>
+        </select>
+
         <button type="submit">Submit</button>
     </form>
 </body>
