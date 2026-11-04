@@ -17,13 +17,13 @@
         <label for="pic"> Picture(Url): </label>
         <input type="url" name="pic" id="pic">
         
-        <label for="belongingTo">Choose a category:</label>
+        <label for="category">Choose a category:</label>
 
 // I broke something here
 
-        <select id="belongingTo" name="belongingTo">
+        <select id="category" name="category">
         <%categories.map((category)=>{%>
-        <option value=<%= category.categoryName %>> <%= category.categoryName %></option>
+        <option value=<%= category.categoryName %>> <%= category.categoryname %></option>
         <%})%>
         </select>
 

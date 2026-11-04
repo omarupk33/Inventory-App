@@ -1,4 +1,3 @@
-require('dotenv').config()
 
 const express = require('express')
 const {getAllItems, InsertItem} = require('./db/queries')

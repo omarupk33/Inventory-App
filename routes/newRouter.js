@@ -4,7 +4,7 @@ const express = require('express')
 const route = express.Router()
 
 const {insertCategory, insertItem,
-     getAllItems, getAllCategories} = require('../db/queries')
+     getAllItems, getAllCategoryNames} = require('../db/queries')
 
 
 
@@ -21,11 +21,12 @@ route.get('/', (req, res, next)=>{
 })
 
 
-route.get('/newItem', (req, res, next)=>{
+route.get('/newItem', async (req, res, next)=>{
 
 // I broke something here
    try{
-       res.render('newItem.ejs', {categories: [{categoryName:'potato'}]})
+    const categories = await getAllCategoryNames()
+       res.render('newItem.ejs', {categories:categories})
    }
 
    catch(err){
@@ -38,13 +39,13 @@ route.post('/newItem', async(req, res, next)=>{
 
     try{
     
-    const {name, amount, pic} = req.body
+    const {name, amount, pic, category} = req.body
 
-    if(!name || !pic || amount === 0){
+    if(!name || !pic || amount === 0 || !category){
         throw new Error('Values Invalid')
     }
 
-    await insertItem(name, amount, pic)
+    await insertItem(name, amount, pic, category)
 
     res.redirect('/')
    }
