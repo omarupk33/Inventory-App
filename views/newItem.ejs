@@ -23,7 +23,8 @@
 
         <select id="category" name="category">
         <%categories.map((category)=>{%>
-        <option value=<%= category.categoryName %>> <%= category.categoryname %></option>
+            <!-- HERE: the value of the option is empty -->
+        <option value=<%= category.categoryname %>> <%= category.categoryname %></option>
         <%})%>
         </select>
 

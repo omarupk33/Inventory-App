@@ -42,7 +42,7 @@ route.post('/newItem', async(req, res, next)=>{
     const {name, amount, pic, category} = req.body
 
     if(!name || !pic || amount === 0 || !category){
-        throw new Error('Values Invalid')
+        throw new Error(`Values Invalid name: ${name} pic: ${pic} amount:${typeof amount}:${amount} category: ${category}`)
     }
 
     await insertItem(name, amount, pic, category)

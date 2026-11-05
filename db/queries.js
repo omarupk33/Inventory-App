@@ -29,14 +29,13 @@ const getAllCategoryNames = async ()=>{
 const insertCategory = async(category, numOfItems)=>{
     await pool.query(`INSERT INTO categories
     (CategoryName, RelatedItemsNum) 
-    VALUES (($1), ($2));
-    
+    VALUES (($1), ($2));`, [category, numOfItems])
+
+    await pool.query(`
     INSERT INTO belongsTo (CategoryName) 
     SELECT CategoryName FROM categories
     WHERE CategoryName NOT IN 
-    (SELECT CategoryName FROM belongsTo);
-    
-    `, [category, numOfItems])
+    (SELECT CategoryName FROM belongsTo);`)
 }
 
 const updateCategoryNum = async(category, items)=>{

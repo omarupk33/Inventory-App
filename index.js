@@ -1,6 +1,6 @@
 
 const express = require('express')
-const {getAllItems, InsertItem} = require('./db/queries')
+const {getAllItems, InsertItem, getAllCategoryNames} = require('./db/queries')
 const app = express()
 app.set('view engine', 'ejs')
 app.set('views', './views')
@@ -13,12 +13,13 @@ app.get('/', async (req, res, next)=>{
     try{
     
     const users = await getAllItems()
+    const categories = await getAllCategoryNames()
     
-    if(!users || users.length === 0){
+    if(!users || users.length === 0 || !categories || categories.length === 0){
         throw new Error('Database Connection Failed')
     }
         
-    res.render('index.ejs', {users:users})
+    res.render('index.ejs', {users:users, categories:categories})
 
    }
 
