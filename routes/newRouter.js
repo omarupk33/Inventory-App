@@ -74,13 +74,13 @@ route.post('/newCategory', async(req, res, next)=>{
 
     try{
     
-    const {category, beloningItems} = req.body
+    const {category} = req.body
 
     if(!category){
         throw new Error('Values Invalid')
     }
 
-    await insertCategory(category, beloningItems)
+    await insertCategory(category)
 
     res.redirect('/')
    }

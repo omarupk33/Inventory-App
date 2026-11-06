@@ -15,20 +15,18 @@ app.get('/', async (req, res, next)=>{
     const users = await getAllItems()
     const categories = await getAllCategoryNames()
     
-    if(!users || users.length === 0 || !categories || categories.length === 0){
+    if(!users || users.length === 0 ||
+       !categories || categories.length === 0){
         throw new Error('Database Connection Failed')
     }
         
     res.render('index.ejs', {users:users, categories:categories})
-
    }
 
    catch(err){
     next(err)
    }
 })
-
-
 
 app.use('/new', newRouter)
 

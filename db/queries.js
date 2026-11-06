@@ -12,30 +12,29 @@ const getAllItems = async ()=>{
 // Fix category here as it's not appearing in te 
 const insertItem = async(item, num, pic, category)=>{
     await pool.query(`INSERT INTO items
-    (ItemName, ItemNum, ItemPic, category) 
-    VALUES (($1), ($2), ($3), ($4));`, [item, num, pic,category])
+        (ItemName, ItemNum, ItemPic, category) 
+        VALUES (($1), ($2), ($3), ($4));`, [item, num, pic,category])
+
+    await pool.query(`UPDATE categories 
+        SET relateditems = array_append(relateditems, ($1)) 
+        WHERE categoryname = ($2);`, [item, category])
 }
 
 
 
 const getAllCategoryNames = async ()=>{
     const allCategories = await pool
-    .query('SELECT CategoryName FROM categories;')
+    .query('SELECT categoryname FROM categories;')
     console.log(allCategories)
     return allCategories.rows
 }
 
 
-const insertCategory = async(category, numOfItems)=>{
+const insertCategory = async(category)=>{
     await pool.query(`INSERT INTO categories
-    (CategoryName, RelatedItemsNum) 
-    VALUES (($1), ($2));`, [category, numOfItems])
+    (CategoryName) 
+    VALUES (($1));`, [category])
 
-    await pool.query(`
-    INSERT INTO belongsTo (CategoryName) 
-    SELECT CategoryName FROM categories
-    WHERE CategoryName NOT IN 
-    (SELECT CategoryName FROM belongsTo);`)
 }
 
 const updateCategoryNum = async(category, items)=>{
