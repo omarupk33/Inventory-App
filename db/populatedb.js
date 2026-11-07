@@ -5,12 +5,11 @@ require('dotenv').config()
 const {Client} = require('pg')
 
     SQL = `CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY
-            KEY GENERATED ALWAYS AS IDENTITY, ItemName VARCHAR (255), 
-            ItemNum INTEGER, ItemPic VARCHAR, category VARCHAR (255));
-
+        KEY GENERATED ALWAYS AS IDENTITY, ItemName VARCHAR (255), 
+        ItemNum INTEGER, ItemPic VARCHAR, category  TEXT[]);
 
         INSERT INTO items (ItemName, ItemNum, ItemPic, category)
-        VALUES ('Miswak', 2, 'PLACEHODLER', 'Cleaning Product');
+        VALUES ('Miswak', 2, 'PLACEHODLER', ARRAY['Cleaning Product']);
     `
 
 

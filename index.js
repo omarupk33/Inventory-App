@@ -8,19 +8,21 @@ app.use(express.urlencoded({ extended: true }))
 
 
 const newRouter = require('./routes/newRouter')
+const updateRouter = require('./routes/updateRouter')
+
 
 app.get('/', async (req, res, next)=>{
     try{
     
-    const users = await getAllItems()
+    const items = await getAllItems()
     const categories = await getAllCategoryNames()
     
-    if(!users || users.length === 0 ||
+    if(!items || items.length === 0 ||
        !categories || categories.length === 0){
         throw new Error('Database Connection Failed')
     }
         
-    res.render('index.ejs', {users:users, categories:categories})
+    res.render('index.ejs', {items:items, categories:categories})
    }
 
    catch(err){
@@ -29,6 +31,8 @@ app.get('/', async (req, res, next)=>{
 })
 
 app.use('/new', newRouter)
+app.use('/update', updateRouter)
+
 
 
 app.use((req, res, next)=>{

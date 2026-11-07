@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <h1>
+       Update Items✨
+    </h1>
+
+    <% const path = `/update/:${item.itemname}` %>
+
+    <form action= <%= path %> method="GET">
+        
+        <label for="name"> Item's name: </label>
+        <input type="text" name="name" id="name" value=<%= item.itemname %> >
+
+        <label for="amount"> Number Of Items: </label>
+        <input type="number" name="amount" id="amount" value=<%= item.itemnum %> >
+
+        <label for="pic"> Picture(Url): </label>
+        <input type="url" name="pic" id="pic" value=<%= item.itempic %> >
+        
+        <label for="category">Choose a category:</label>
+
+// I broke something here
+
+        <select id="category" name="category[]" multiple>
+        <%categories.map((category)=>{%>
+       
+        <option value=<%= category.categoryname %>> <%= category.categoryname %></option>
+        <%})%>
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

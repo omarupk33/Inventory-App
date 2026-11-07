@@ -9,16 +9,20 @@
     </h1>
 
     <ul class="items-container">
-    <%users.map((user)=>{%>    
+    <%items.map((item)=>{%>    
         <li item-container>
             <div>
-                <img src=<%=user.itempic%> alt=<%=user.itemname%>
+                <img src=<%=item.itempic%> alt=<%=item.itemname%>
                 <h3>
-                    Name: <%= user.itemname%>
-                    Amount: <%=user.itemnum%> 
-                    Category: <%=user.category%> 
-
+                    Name: <%= item.itemname%>
+                    Amount: <%=item.itemnum%> 
+                    Category: <%=item.category%> 
                 </h3>
+                <% const path = `/update/:${item.itemname}` %>
+
+                <form action= <%= path %> method="GET">
+                    <button>Update</button>
+                </form>
             </div>
         </li>
         <%})%>
@@ -32,7 +36,7 @@
     <ul>
         <%categories.map((category)=>{%>
         <li>
-            <%= category.categoryname    %>
+            <%= category.categoryname%>
         </li>
         
         <%})%>
