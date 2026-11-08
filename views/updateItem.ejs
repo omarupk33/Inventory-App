@@ -8,9 +8,9 @@
        Update Items✨
     </h1>
 
-    <% const path = `/update/:${item.itemname}` %>
+    <% const path = `/update/${item.itemname}` %>
 
-    <form action= <%= path %> method="GET">
+    <form action= <%= path %> method="POST">
         
         <label for="name"> Item's name: </label>
         <input type="text" name="name" id="name" value=<%= item.itemname %> >

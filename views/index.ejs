@@ -18,7 +18,7 @@
                     Amount: <%=item.itemnum%> 
                     Category: <%=item.category%> 
                 </h3>
-                <% const path = `/update/:${item.itemname}` %>
+                <% const path = `/update/${item.itemname}` %>
 
                 <form action= <%= path %> method="GET">
                     <button>Update</button>

@@ -2,8 +2,10 @@ const express = require('express')
 
 const route = express.Router()
 
-const {insertCategory, insertItem,
-     getAllItems, getAllCategoryNames} = require('../db/queries')
+const {insertCategory, insertItem, updateItem,
+       getAllItems, getAllCategoryNames} = require('../db/queries')
+
+const { body } = require('express-validator')
 
 
 
@@ -14,15 +16,13 @@ route.get('/:item', async(req, res, next)=>{
     const items = await getAllItems()
     const categories = await getAllCategoryNames()
 
-    // Here something is wrong
     const item = items.find(item => item.itemname === req.params.item)
 
-    if(!items || items.length === 0 ||
-       !categories || categories.length === 0){
+    if(!item || !categories || categories.length === 0){
         throw new Error('Database Connection Failed')
     }
 
-       res.render('update.ejs', {categories, item})
+       res.render('updateItem.ejs', {categories, item})
    }
 
    catch(err){
@@ -30,15 +30,15 @@ route.get('/:item', async(req, res, next)=>{
    }
 })
 
-route.post('/:id', (req, res, next)=>{
-    
-   try{
-       res.render('new.ejs')
-   }
 
-   catch(err){
-    next(err)
-   }
+// Here
+route.post('/:item', async(req, res, next)=>{
+    const {name, amount, pic, category} = req.body
+    const {item} = req.params
+
+    await updateItem(item, name, amount, pic, category)
+
+    res.redirect('/')
 })
 
 

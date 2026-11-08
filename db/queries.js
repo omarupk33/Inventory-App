@@ -4,7 +4,6 @@ const {pool} = require('./pool')
 const getAllItems = async ()=>{
     const allItems = await pool
     .query('SELECT * FROM items;')
-    console.log(allItems)
     return allItems.rows
 }
 
@@ -12,8 +11,6 @@ const insertItem = async(item, num, pic, categories)=>{
     await pool.query(`INSERT INTO items
         (ItemName, ItemNum, ItemPic, category) 
         VALUES (($1), ($2), ($3), ($4));`, [item, num, pic,categories])
-
-    console.log(categories)
 
     await pool.query(`UPDATE categories 
         SET relateditems = array_append(relateditems, ($1)) 
@@ -63,16 +60,24 @@ const deleteCategory = async(category)=>{
     }
 
 
-    // Update these functions
-const updateItem = async(item)=>{
-    await pool.query(`UPDATE TABLE items 
-     WHERE itemname = ($1);`, [item])
+// Update these functions
+const updateItem = async(item, newName, newNum, newPic, newCategories)=>{
+    await pool.query(`UPDATE items 
+        SET itemname = ($1), itemnum = ($2),
+        itempic = ($3), category = ARRAY$4
+
+        WHERE itemname = ($5);`, [newName, newNum,
+        newPic, newCategories, item])
     }
 
+    // Later
 const updateCategory = async(category)=>{
-    await pool.query(`DELETE FROM categories 
-        WHERE categoryname = ($1);`, [category])
+    await pool.query(`UPDATE categories 
+        SET itemname = ($1), itemnum = ($2),
+        itempic = ($3), category = ARRAY($4)
+
+        WHERE itemname = ($5);`, [category])
     }
 
 module.exports = {insertItem, getAllItems, insertCategory,
-    updateCategoryNum, getAllCategoryNames}
+    updateCategoryNum, getAllCategoryNames, updateItem}
