@@ -18,7 +18,7 @@
                     Amount: <%=item.itemnum%> 
                     Category: <%=item.category%> 
                 </h3>
-                <% const path = `/update/${item.itemname}` %>
+                <% const path = `/update/items/${item.itemname}` %>
 
                 <form action= <%= path %> method="GET">
                     <button>Update</button>
@@ -35,9 +35,15 @@
 
     <ul>
         <%categories.map((category)=>{%>
+        <% const path = `/update/categories/${category.categoryname}` %>
+
         <li>
             <%= category.categoryname%>
         </li>
+
+        <form action= <%= path %> method="GET">
+            <button>Update</button>
+        </form>
         
         <%})%>
 

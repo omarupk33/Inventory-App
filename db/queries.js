@@ -33,11 +33,7 @@ const insertCategory = async(category)=>{
 
 }
 
-const updateCategoryNum = async(category, items)=>{
-    await pool.query(`UPDATE categories
-SET relateditemsnum = ($1)
-WHERE categoryname = ($2);`, [items.length,category])
-}
+
 
 // Working on it
 const itemsBelongTo = async(category, item)=>{
@@ -48,12 +44,13 @@ WHERE categoryname = ($2);`, [item,category])
 
 
 // Add a function to delete categories and items
-
+// should remove from category 
 const deleteItem = async(item)=>{
     await pool.query(`DELETE FROM items 
         WHERE itemname = ($1);`, [item])
     }
 
+    // When deleting category we should remove its name from the items
 const deleteCategory = async(category)=>{
     await pool.query(`DELETE FROM categories 
         WHERE categoryname = ($1);`, [category])
@@ -61,23 +58,40 @@ const deleteCategory = async(category)=>{
 
 
 // Update these functions
+// 
 const updateItem = async(item, newName, newNum, newPic, newCategories)=>{
     await pool.query(`UPDATE items 
         SET itemname = ($1), itemnum = ($2),
-        itempic = ($3), category = ARRAY$4
-
+        itempic = ($3), category = $4
         WHERE itemname = ($5);`, [newName, newNum,
         newPic, newCategories, item])
-    }
+
+    await pool.query(`UPDATE categories 
+        SET relateditems = array_remove(relateditems, ($1));`, [item])
+
+    await pool.query(`UPDATE categories 
+    SET relateditems = array_append(relateditems, ($1))
+    WHERE categoryname = ANY($2);`, [newName, newCategories])
+
+}
+    
 
     // Later
-const updateCategory = async(category)=>{
+const updateCategory = async(oldCategory, newCategory)=>{
     await pool.query(`UPDATE categories 
-        SET itemname = ($1), itemnum = ($2),
-        itempic = ($3), category = ARRAY($4)
+        SET categoryname = ($1),
+        WHERE categoryname = ($2);`, [newCategory, oldCategory])
 
-        WHERE itemname = ($5);`, [category])
+    await pool.query(`UPDATE items 
+        SET category = array_remove(category ,($1));`, [oldCategory])
+
+    await pool.query(`UPDATE items 
+        SET category = array_append(category ,($1));`, [newCategory])
+
     }
 
+
+
 module.exports = {insertItem, getAllItems, insertCategory,
-    updateCategoryNum, getAllCategoryNames, updateItem}
+    getAllCategoryNames, updateItem,
+    updateCategory}
