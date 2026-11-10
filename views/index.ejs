@@ -23,6 +23,11 @@
                 <form action= <%= path %> method="GET">
                     <button>Update</button>
                 </form>
+
+                <% const deletePath = `/delete/${item.itemname}` %>
+                <form action= <%= deletePath %> method="GET">
+                    <button style="background-color: indianred;">Delete</button>
+                </form>
             </div>
         </li>
         <%})%>
@@ -44,7 +49,10 @@
         <form action= <%= path %> method="GET">
             <button>Update</button>
         </form>
-        
+        <% const deletePath = `/delete/${category.categoryname}` %>
+                <form action= <%= deletePath %> method="GET">
+                    <button style="background-color: indianred;">Delete</button>
+                </form>
         <%})%>
 
     </ul>

@@ -17,6 +17,30 @@ const insertItem = async(item, num, pic, categories)=>{
         WHERE categoryname = ANY($2);`, [item, categories])
 }
 
+const updateItem = async(item, newName, newNum, newPic, newCategories)=>{
+    await pool.query(`UPDATE items 
+        SET itemname = ($1), itemnum = ($2),
+        itempic = ($3), category = $4
+        WHERE itemname = ($5);`, [newName, newNum,
+        newPic, newCategories, item])
+
+    await pool.query(`UPDATE categories 
+        SET relateditems = array_remove(relateditems, ($1));`, [item])
+
+    await pool.query(`UPDATE categories 
+    SET relateditems = array_append(relateditems, ($1))
+    WHERE categoryname = ANY($2);`, [newName, newCategories])
+
+}
+
+const deleteItem = async(item)=>{
+    await pool.query(`DELETE FROM items 
+        WHERE itemname = ($1);`, [item])
+
+    await pool.query(`UPDATE categories 
+        SET relateditems = array_remove(relateditems, ($1));`, [item])
+}
+
 
 
 const getAllCategoryNames = async ()=>{
@@ -34,52 +58,9 @@ const insertCategory = async(category)=>{
 }
 
 
-
-// Working on it
-const itemsBelongTo = async(category, item)=>{
-    await pool.query(`SELECT ItemName FROM 
-        items relateditemsnum = ($1)
-WHERE categoryname = ($2);`, [item,category])
-}
-
-
-// Add a function to delete categories and items
-// should remove from category 
-const deleteItem = async(item)=>{
-    await pool.query(`DELETE FROM items 
-        WHERE itemname = ($1);`, [item])
-    }
-
-    // When deleting category we should remove its name from the items
-const deleteCategory = async(category)=>{
-    await pool.query(`DELETE FROM categories 
-        WHERE categoryname = ($1);`, [category])
-    }
-
-
-// Update these functions
-// 
-const updateItem = async(item, newName, newNum, newPic, newCategories)=>{
-    await pool.query(`UPDATE items 
-        SET itemname = ($1), itemnum = ($2),
-        itempic = ($3), category = $4
-        WHERE itemname = ($5);`, [newName, newNum,
-        newPic, newCategories, item])
-
-    await pool.query(`UPDATE categories 
-        SET relateditems = array_remove(relateditems, ($1));`, [item])
-
-    await pool.query(`UPDATE categories 
-    SET relateditems = array_append(relateditems, ($1))
-    WHERE categoryname = ANY($2);`, [newName, newCategories])
-
-}
-    
-
-    // Later
 const updateCategory = async(oldCategory, newCategory)=>{
     await pool.query(`UPDATE categories 
-        SET categoryname = ($1),
+        SET categoryname = ($1)
         WHERE categoryname = ($2);`, [newCategory, oldCategory])
 
     await pool.query(`UPDATE items 
@@ -87,11 +68,18 @@ const updateCategory = async(oldCategory, newCategory)=>{
 
     await pool.query(`UPDATE items 
         SET category = array_append(category ,($1));`, [newCategory])
-
-    }
-
+}
 
 
+const deleteCategory = async(category)=>{
+    await pool.query(`DELETE FROM categories 
+        WHERE categoryname = ($1);`, [category])
+
+    await pool.query(`UPDATE categories 
+        SET relateditems = array_remove(relateditems, ($1));`, [item])
+}
+
+    
 module.exports = {insertItem, getAllItems, insertCategory,
     getAllCategoryNames, updateItem,
-    updateCategory}
+    updateCategory, deleteItem, deleteCategory}

@@ -9,6 +9,8 @@ app.use(express.urlencoded({ extended: true }))
 
 const newRouter = require('./routes/newRouter')
 const updateRouter = require('./routes/updateRouter')
+const deleteRouter = require('./routes/deleteRouter')
+
 
 
 app.get('/', async (req, res, next)=>{
@@ -32,6 +34,8 @@ app.get('/', async (req, res, next)=>{
 
 app.use('/new', newRouter)
 app.use('/update', updateRouter)
+app.use('/delete', deleteRouter)
+
 
 
 
