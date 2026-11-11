@@ -4,7 +4,7 @@ const express = require('express')
 const route = express.Router()
 
 const {insertCategory, insertItem,
-     getAllItems, getAllCategoryNames} = require('../db/queries')
+     getAllCategoryNames} = require('../db/queries')
 
 
 

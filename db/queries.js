@@ -75,8 +75,9 @@ const deleteCategory = async(category)=>{
     await pool.query(`DELETE FROM categories 
         WHERE categoryname = ($1);`, [category])
 
-    await pool.query(`UPDATE categories 
-        SET relateditems = array_remove(relateditems, ($1));`, [item])
+    await pool.query(`UPDATE items 
+        SET category = array_remove(category, ($1))
+        WHERE $1 = ANY(category);`, [category])
 }
 
     

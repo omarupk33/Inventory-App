@@ -4,11 +4,15 @@
     <title>Document</title>
 </head>
 <body>
+    <a href="/new/newItem">Add an Item</a>
+    <a href="/new/newCategory">Add a Category</a>
+    
     <h1>
         The Guild's Inventory✨
     </h1>
 
     <ul class="items-container">
+            <%if(items){%>
     <%items.map((item)=>{%>    
         <li item-container>
             <div>
@@ -24,13 +28,13 @@
                     <button>Update</button>
                 </form>
 
-                <% const deletePath = `/delete/${item.itemname}` %>
-                <form action= <%= deletePath %> method="GET">
+                <% const deletePath = `/delete/items/${item.itemname}` %>
+                <form action= <%= deletePath %> method="POST">
                     <button style="background-color: indianred;">Delete</button>
                 </form>
             </div>
         </li>
-        <%})%>
+        <%})}%>
     </ul>
 
 
@@ -39,6 +43,7 @@
     </h1>
 
     <ul>
+        <%if(categories){%>
         <%categories.map((category)=>{%>
         <% const path = `/update/categories/${category.categoryname}` %>
 
@@ -49,12 +54,12 @@
         <form action= <%= path %> method="GET">
             <button>Update</button>
         </form>
-        <% const deletePath = `/delete/${category.categoryname}` %>
-                <form action= <%= deletePath %> method="GET">
+        <% const deletePath = `/delete/categories/${category.categoryname}` %>
+                <form action= <%= deletePath %> method="POST">
                     <button style="background-color: indianred;">Delete</button>
                 </form>
-        <%})%>
-
+        <%})}%>
+         
     </ul>
 </body>
 </html>

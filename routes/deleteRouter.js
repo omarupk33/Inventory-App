@@ -6,15 +6,13 @@ const {deleteItem, deleteCategory,
 getAllItems, getAllCategoryNames
 } = require('../db/queries')
 
-route.get('/:item', async(req, res, next)=>{
+route.post('/items/:item', async(req, res, next)=>{
     
 try{
-    const items = await getAllItems()
-    const item = items.find(item => item.itemname === req.params.item)
-    if(!item){
+    if(!deleteItem){
         throw new Error('Database Connection Failed')
     }
-    await deleteItem(item)
+    await deleteItem(req.params.item)
     res.redirect('/')
     }
 
@@ -24,20 +22,17 @@ try{
 })
 
 
+route.post('/categories/:category', async(req, res, next)=>{
 
-route.get('/:category', async(req, res, next)=>{
+    console.log(req.params.category)
+    console.log(typeof req.params.category)
     
    try{
 
-    const categories = await getAllCategoryNames()
- 
-    const category = categories.
-    find(category => category.categoryname === req.params.category)
-
-    if(!category){
+    if(!deleteCategory){
         throw new Error('Database Connection Failed')
     }
-       await deleteCategory(category)
+       await deleteCategory(req.params.category)
        res.redirect('/')
    }
 

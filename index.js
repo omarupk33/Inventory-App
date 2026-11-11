@@ -16,11 +16,10 @@ const deleteRouter = require('./routes/deleteRouter')
 app.get('/', async (req, res, next)=>{
     try{
     
-    const items = await getAllItems()
+    const items = await getAllItems() 
     const categories = await getAllCategoryNames()
     
-    if(!items || items.length === 0 ||
-       !categories || categories.length === 0){
+    if(!items || !categories){
         throw new Error('Database Connection Failed')
     }
         

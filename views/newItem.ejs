@@ -19,14 +19,14 @@
         
         <label for="category">Choose a category:</label>
 
-// I broke something here
-
         <select id="category" name="category[]" multiple>
         <%categories.map((category)=>{%>
        
         <option value=<%= category.categoryname %>> <%= category.categoryname %></option>
         <%})%>
         </select>
+       <p> Note: You can't add an item if you have no categories</p>
+
 
         <button type="submit">Submit</button>
     </form>
